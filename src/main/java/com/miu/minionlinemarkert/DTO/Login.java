@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Setter
@@ -14,10 +14,10 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Login {
-    @NotNull
+    @NotEmpty
     @Email
     private String username;
-    @NotNull
+    @NotEmpty
     @Size(min = 1)
     private String password;
     private boolean rememberMe;
