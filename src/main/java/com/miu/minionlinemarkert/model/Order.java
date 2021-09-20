@@ -1,9 +1,12 @@
 package com.miu.minionlinemarkert.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
@@ -12,7 +15,12 @@ import java.util.List;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long orderId;
 
     @NotNull
@@ -25,10 +33,19 @@ public class Order {
     private LocalDate shippingDate;
 
     @Valid
+    @OneToOne
     private Address shippingAddress;
 
     @Valid
+    @OneToOne
     private Address billingAddress;
 
-    private List<Item> itemList;
+    @ManyToOne
+    private AppUser user;
+
+    @OneToMany(mappedBy = "order")
+    private List<Product> productList;
+
+    @OneToOne
+    private Payment payment;
 }
