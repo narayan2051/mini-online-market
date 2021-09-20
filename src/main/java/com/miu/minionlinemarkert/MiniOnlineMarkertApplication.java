@@ -10,5 +10,4 @@ public class MiniOnlineMarkertApplication {
         SpringApplication.run(MiniOnlineMarkertApplication.class, args);
         //comment
     }
-
 }
