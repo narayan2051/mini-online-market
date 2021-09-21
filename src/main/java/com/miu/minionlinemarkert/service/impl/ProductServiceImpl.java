@@ -20,6 +20,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void save(Product product) {
+        if (product.getId() != null) {
+            product.setCreatedDate(getById(product.getId()).getCreatedDate());
+            product.setModifiedDate(System.currentTimeMillis());
+        } else {
+            product.setCreatedDate(System.currentTimeMillis());
+        }
         productRepository.save(product);
     }
 

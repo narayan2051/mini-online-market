@@ -25,4 +25,6 @@ public class Product {
     private String description;
     private BigDecimal price;
     private String category;
+    private long createdDate;
+    private long modifiedDate;
 }
