@@ -2,11 +2,13 @@ package com.miu.minionlinemarkert.controller;
 
 import com.miu.minionlinemarkert.DTO.ApiResponse;
 import com.miu.minionlinemarkert.DTO.ProductDTO;
+import com.miu.minionlinemarkert.constant.AppConstant;
 import com.miu.minionlinemarkert.constant.ResponseConstant;
 import com.miu.minionlinemarkert.model.Product;
 import com.miu.minionlinemarkert.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,8 +31,14 @@ public class ProductController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority("+ AppConstant.SELLER + ")")
     public List<Product> findAll() {
         return productService.findAll();
+    }
+
+    @GetMapping("/stock")
+    public List<Product> findAllProductWhoseQuantityIsGreaterThanZero(){
+        return productService.getAllProductWhichAreNotOutOfStock();
     }
 
     @PostMapping

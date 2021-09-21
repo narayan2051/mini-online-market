@@ -6,6 +6,7 @@ import com.miu.minionlinemarkert.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,5 +38,22 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findAll() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> getAllProductWhichAreNotOutOfStock() {
+        return productRepository.getAllProductWhichAreNotOutOfStock();
+    }
+
+    @Override
+    public void updateProductQuantity(List<Product> productList) {
+        List<Product> updatedProducts= new ArrayList<>();
+        for(Product product: productList){
+            Product productFromDB= getById(product.getId());
+            productFromDB.setQuantity(productFromDB.getQuantity()-product.getQuantity());
+            productFromDB.setModifiedDate(System.currentTimeMillis());
+            updatedProducts.add(productFromDB);
+        }
+        productRepository.saveAll(updatedProducts);
     }
 }

@@ -5,26 +5,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.math.BigDecimal;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Product {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String title;
-    private double quantity;
-    private String description;
-    private BigDecimal price;
-    private String category;
+    private Long userId;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "ORDER_PRODUCT")
+    private List<Product> productList;
     private long createdDate;
     private long modifiedDate;
 }
