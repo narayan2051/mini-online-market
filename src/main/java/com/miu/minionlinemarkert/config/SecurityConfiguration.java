@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -23,6 +25,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 @Configuration
 @EnableWebSecurity
@@ -31,13 +34,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Value("#{'${allowed.origins}'.split(',')}")
     private List<String> allowedOrigins;
+    @Value("${email.host}")
+    private String host;
+    @Value("${email.port}")
+    private int port;
+    @Value("${email.user}")
+    private String email;
+    @Value("${email.password}")
+    private String  password;
 
     @Autowired
     private AppUserService appUserService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //TODO:Narayan - Remove inmemory auth for accessing db
+        //TODO:Narayan - Remove inmemory auth after everything done
        auth.inMemoryAuthentication().withUser("admin").password(getPasswordEncoder().encode("admin"))
                 .roles("ADMIN");
 
@@ -93,5 +104,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new ModelMapper();
     }
 
+    @Bean
+    public JavaMailSender getJavaMailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost(host);
+        mailSender.setPort(port);
+        mailSender.setUsername(email);
+        mailSender.setPassword(password);
+
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.debug", "true");
+        return mailSender;
+    }
 
 }
