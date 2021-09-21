@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 @Setter
@@ -20,32 +20,12 @@ import java.util.List;
 @Entity
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long orderId;
-
-    @NotNull
-    @DateTimeFormat(pattern = "MM/dd/yyyy")
-    private LocalDate orderDate;
-
-    @NotNull
-    @DateTimeFormat(pattern = "MM/dd/yyyy")
-    @Future
-    private LocalDate shippingDate;
-
-    @Valid
-    @OneToOne
-    private Address shippingAddress;
-
-    @Valid
-    @OneToOne
-    private Address billingAddress;
-
-    @ManyToOne
-    private AppUser user;
-
-    @OneToMany(mappedBy = "order")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private Long userId;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "ORDER_PRODUCT")
     private List<Product> productList;
-
-    @OneToOne
-    private Payment payment;
+    private long createdDate;
+    private long modifiedDate;
 }

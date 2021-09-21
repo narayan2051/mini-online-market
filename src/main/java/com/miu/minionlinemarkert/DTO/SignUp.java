@@ -2,7 +2,6 @@ package com.miu.minionlinemarkert.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
@@ -12,13 +11,20 @@ import javax.validation.constraints.Size;
 @Setter
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
-public class Login {
+public class SignUp {
+    @NotEmpty
+    @Size(min = 2)
+    private String firstName;
+    @NotEmpty
+    @Size(min=2)
+    private String lastName;
     @NotEmpty
     @Email
-    private String username;
+    private String email;
     @NotEmpty
-    @Size(min = 1)
+    @Size(min=2)
     private String password;
-    private boolean rememberMe;
+    @NotEmpty
+    @Size(min=2)
+    private String role;
 }

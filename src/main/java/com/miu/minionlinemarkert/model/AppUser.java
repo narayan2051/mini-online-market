@@ -1,13 +1,14 @@
 package com.miu.minionlinemarkert.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Setter
 @Getter
@@ -15,28 +16,16 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 public class AppUser {
-    //ToDo: import should be change if we upgrade db to mongo
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    private String email;
-    private String password;
     private String firstName;
     private String lastName;
-
-    @OneToMany(cascade= CascadeType.ALL)
-    private Set<Role> roles;
-
-    @OneToMany(mappedBy="user")
-    private List<Order> orders;
-
-    @OneToOne
-    private Cart cart;
-
-    @OneToOne
-    private Address address;
-
-    @OneToOne
-    private Payment payment;
+    private String email;
+    @JsonIgnore
+    private String password;
+    private String role;
+    private boolean approved;
+    private long createDate;
+    private long modifiedDate;
 }
