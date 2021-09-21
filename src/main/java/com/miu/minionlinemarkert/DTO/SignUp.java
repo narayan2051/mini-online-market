@@ -24,4 +24,7 @@ public class SignUp {
     @NotEmpty
     @Size(min=2)
     private String password;
+    @NotEmpty
+    @Size(min=2)
+    private String role;
 }

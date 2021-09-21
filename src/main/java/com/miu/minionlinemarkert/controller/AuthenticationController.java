@@ -1,5 +1,6 @@
 package com.miu.minionlinemarkert.controller;
 
+import com.miu.minionlinemarkert.DTO.ApiResponse;
 import com.miu.minionlinemarkert.DTO.AuthResponse;
 import com.miu.minionlinemarkert.DTO.Login;
 import com.miu.minionlinemarkert.constant.ResponseConstant;
@@ -35,8 +36,11 @@ public class AuthenticationController {
 
 
     @PostMapping
-    public AuthResponse login(@RequestBody @Valid Login login){
+    public ApiResponse login(@RequestBody @Valid Login login){
         AppUser appUser= appUserService.getByUserName(login.getUsername());
+        if(!appUser.isApproved()){
+           return new ApiResponse(ResponseConstant.FAILURE,ResponseConstant.USER_UNAPPROVED);
+        }
         Authentication authentication = authenticationManager.
                 authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword(), new ArrayList<>()));
         if (authentication != null) {

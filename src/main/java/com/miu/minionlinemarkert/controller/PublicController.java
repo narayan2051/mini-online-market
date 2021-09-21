@@ -2,6 +2,7 @@ package com.miu.minionlinemarkert.controller;
 
 import com.miu.minionlinemarkert.DTO.ApiResponse;
 import com.miu.minionlinemarkert.DTO.SignUp;
+import com.miu.minionlinemarkert.constant.AppConstant;
 import com.miu.minionlinemarkert.constant.ResponseConstant;
 import com.miu.minionlinemarkert.model.AppUser;
 import com.miu.minionlinemarkert.service.AppUserService;
@@ -32,10 +33,17 @@ public class PublicController {
     @PostMapping("/signup")
     public ApiResponse signUp(@Valid @RequestBody SignUp signUp) {
         AppUser appUser = modelMapper.map(signUp, AppUser.class);
-        appUser.setRole("USER");
-        appUser.setApproved(false);
+        appUser.setPassword(passwordEncoder.encode(signUp.getPassword()));
+        setApproval(appUser);
         appUserService.save(appUser);
         return new ApiResponse(ResponseConstant.SUCCESS,ResponseConstant.SIGN_UP_SUCCESS);
+    }
+
+    private void setApproval(AppUser appUser) {
+        if(appUser.getRole().equals(AppConstant.SELLER)){
+            appUser.setApproved(false);
+        }
+        appUser.setApproved(true);
     }
 
 }
