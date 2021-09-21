@@ -1,21 +1,20 @@
 package com.miu.minionlinemarkert.service.impl;
 
 import com.miu.minionlinemarkert.model.AppUser;
-import com.miu.minionlinemarkert.model.Role;
 import com.miu.minionlinemarkert.repository.AppUserRepository;
 import com.miu.minionlinemarkert.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class AppUserServiceImpl implements AppUserService {
 
     private final AppUserRepository appUserRepository;
@@ -28,20 +27,33 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public void save(AppUser appUser) {
+        if (appUser.getId() != null) {
+            appUser.setCreateDate(getById(appUser.getId()).getCreateDate());
+            appUser.setModifiedDate(System.currentTimeMillis());
+        } else {
+            appUser.setCreateDate(System.currentTimeMillis());
+        }
         appUserRepository.save(appUser);
     }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        AppUser user= getByUserName(s);
-        List<GrantedAuthority> authorities= new ArrayList<>();
-        for(Role role: user.getRoles()){
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
-        return new User(user.getEmail(), user.getPassword(),authorities);
+        AppUser user = getByUserName(s);
+        return new User(user.getEmail(), user.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList(user.getRole()));
     }
 
-    private AppUser getByUserName(String s) {
+    @Override
+    public AppUser getByUserName(String s) {
         return appUserRepository.findByEmail(s);
+    }
+
+    @Override
+    public AppUser getById(Long id) {
+        return appUserRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<AppUser> findAll() {
+        return appUserRepository.findAll();
     }
 }
