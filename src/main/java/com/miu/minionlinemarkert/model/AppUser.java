@@ -5,12 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.List;
-import java.util.Set;
 
 @Setter
 @Getter
@@ -18,11 +16,13 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 public class AppUser {
-    //ToDo: import should be change if we upgrade db to mongo
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String email;
     private String password;
-    @OneToMany(cascade= CascadeType.ALL)
-    private Set<Role> roles;
+    private String role;
+    private boolean approved;
+    private long createDate;
+    private long modifiedDate;
 }

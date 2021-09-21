@@ -2,6 +2,9 @@ package com.miu.minionlinemarkert.controller;
 
 import com.miu.minionlinemarkert.DTO.AuthResponse;
 import com.miu.minionlinemarkert.DTO.Login;
+import com.miu.minionlinemarkert.constant.ResponseConstant;
+import com.miu.minionlinemarkert.model.AppUser;
+import com.miu.minionlinemarkert.service.AppUserService;
 import com.miu.minionlinemarkert.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,22 +24,25 @@ public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
+    private final AppUserService appUserService;
 
     @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, AppUserService appUserService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.appUserService = appUserService;
     }
 
 
     @PostMapping
     public AuthResponse login(@RequestBody @Valid Login login){
+        AppUser appUser= appUserService.getByUserName(login.getUsername());
         Authentication authentication = authenticationManager.
                 authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword(), new ArrayList<>()));
         if (authentication != null) {
-            return new AuthResponse("success", "Login Success", jwtUtil.generateToken(authentication));
+            return new AuthResponse(ResponseConstant.SUCCESS,"Login Success",jwtUtil.generateToken(authentication));
         }
-        return new AuthResponse("failure", "Authentication failed", null);
+        return new AuthResponse(ResponseConstant.FAILURE, "Invalid Username/password", null);
     }
 
 }

@@ -2,6 +2,7 @@ package com.miu.minionlinemarkert.config;
 
 import com.miu.minionlinemarkert.filter.AuthorizationFilter;
 import com.miu.minionlinemarkert.service.AppUserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -50,10 +51,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors().and().
                 authorizeRequests().antMatchers("/auth").permitAll()
                 .antMatchers("/","/h2-console/**").permitAll()
+                .antMatchers("/api/public/**").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
                 .antMatchers("/webjars/**", "/swagger-resources/**").permitAll()
                 .antMatchers("/v2/**").permitAll()
-                .antMatchers("/api/**").hasAnyAuthority("ADMIN","USER")
+                .antMatchers("/api/users/**").hasAnyAuthority("ADMIN","USER")
                 .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest().authenticated()
                 .and().csrf().disable()
                 .addFilter(new AuthorizationFilter(authenticationManager()))
@@ -86,6 +88,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return source;
     }
 
+    @Bean
+    public ModelMapper getModelMapper(){
+        return new ModelMapper();
+    }
 
 
 }

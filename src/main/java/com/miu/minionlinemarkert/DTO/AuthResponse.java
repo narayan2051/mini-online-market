@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
-public class AuthResponse extends ApiResponse{
-    private String type;
-    private String message;
+public class AuthResponse extends ApiResponse {
     private String token;
+    public AuthResponse(String type, String message, String token) {
+        super(type, message);
+        this.token = token;
+    }
 }
