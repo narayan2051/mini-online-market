@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +54,7 @@ public class OrderController {
         return  orderService.findProductByUserId(appUtil.getUserByAuthentication(authentication).getId());
     }
 
+    //TODO: Narayan - Order List should be based on logged in user
     @GetMapping
     public List<Order> findAll(){
         return orderService.findAll();
@@ -62,6 +64,11 @@ public class OrderController {
     public ApiResponse updateOrderStatus(@RequestBody OrderStatus orderStatus){
         orderService.updateOrderStatus(orderStatus);
         return new ApiResponse(ResponseConstant.SUCCESS,ResponseConstant.ORDER_STATUS_UPDATED);
+    }
+
+    @GetMapping("/{id}")
+    public Order findById(@PathVariable("id") Long id){
+        return orderService.getById(id);
     }
 
 }
