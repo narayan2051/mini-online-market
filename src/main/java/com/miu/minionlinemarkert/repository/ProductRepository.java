@@ -11,4 +11,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select p from Product p where p.quantity > 0")
     List<Product> getAllProductWhichAreNotOutOfStock();
+
+    @Query("select p from Product p where p.reviews.size>0")
+    List<Product> getPendingReviewApprovalProducts();
 }

@@ -29,6 +29,9 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "ORDER_PRODUCT")
     private List<Product> productList;
+    private String orderStatus;
+    private String billingAddress;
+    private String shippingAddress;
     private long createdDate;
     private long modifiedDate;
 }

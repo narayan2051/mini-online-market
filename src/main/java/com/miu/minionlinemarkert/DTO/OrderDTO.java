@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Setter
@@ -14,6 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderDTO {
     private Long id;
-    private Long userId;
+    @Size(min = 1)
     private List<Product> productList;
+    private String billingAddress;
+    private String shippingAddress;
 }
