@@ -10,8 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.List;
 
@@ -26,8 +25,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long userId;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "ORDER_PRODUCT")
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Product> productList;
     private String orderStatus;
     private String billingAddress;

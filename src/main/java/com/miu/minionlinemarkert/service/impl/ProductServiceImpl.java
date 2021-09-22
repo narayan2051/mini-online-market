@@ -1,5 +1,6 @@
 package com.miu.minionlinemarkert.service.impl;
 
+import com.miu.minionlinemarkert.DTO.ProductComment;
 import com.miu.minionlinemarkert.model.Product;
 import com.miu.minionlinemarkert.model.Review;
 import com.miu.minionlinemarkert.repository.ProductRepository;
@@ -52,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> updatedProducts = new ArrayList<>();
         for (Product product : productList) {
             Product productFromDB = getById(product.getId());
-            productFromDB.setQuantity(productFromDB.getQuantity() - product.getQuantity());
+            //productFromDB.setQuantity(productFromDB.getQuantity() - product.getQuantity());
             productFromDB.setModifiedDate(System.currentTimeMillis());
             updatedProducts.add(productFromDB);
         }
@@ -81,5 +82,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void saveAll(List<Product> productList) {
         productRepository.saveAll(productList);
+    }
+
+    @Override
+    public void updateProductReviewStatus(ProductComment productComment) {
+        Product product = getById(productComment.getProductId());
+        for (Review r : product.getReviews()) {
+            if (r.getId() == productComment.getReviewId()) {
+                r.setApproveStatus(productComment.isStatus());
+                break;
+            }
+        }
+        save(product);
     }
 }

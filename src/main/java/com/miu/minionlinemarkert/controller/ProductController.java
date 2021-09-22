@@ -1,6 +1,7 @@
 package com.miu.minionlinemarkert.controller;
 
 import com.miu.minionlinemarkert.DTO.ApiResponse;
+import com.miu.minionlinemarkert.DTO.ProductComment;
 import com.miu.minionlinemarkert.DTO.ProductDTO;
 import com.miu.minionlinemarkert.DTO.ReviewDTO;
 import com.miu.minionlinemarkert.constant.AppConstant;
@@ -37,7 +38,7 @@ public class ProductController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority(" + AppConstant.SELLER + ")")
+//    @PreAuthorize("hasAuthority(" + AppConstant.SELLER + ")")
     public List<Product> findAll() {
         return productService.findAll();
     }
@@ -70,4 +71,12 @@ public class ProductController {
     public List<Product> getPendingReviewProducts() {
         return productService.getPendingReviewProducts();
     }
+
+    @PreAuthorize("hasAuthority(" + AppConstant.ADMIN + ")")
+    @PostMapping("/update-review-status")
+    public ApiResponse updateProductReviewStatus(@RequestBody ProductComment productComment){
+        productService.updateProductReviewStatus(productComment);
+        return new ApiResponse(ResponseConstant.SUCCESS,ResponseConstant.COMMENT_STATUS_UPDATED);
+    }
+
 }

@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,8 +30,10 @@ public class Product {
     private String description;
     private BigDecimal price;
     private String category;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE)
     private List<Review> reviews;
+    @ManyToMany(mappedBy = "productList")
+    private List<Order> orderList;
     private long createdDate;
     private long modifiedDate;
 }

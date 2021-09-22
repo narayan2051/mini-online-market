@@ -10,4 +10,5 @@ public class ResponseConstant {
     public static final String USER_UPDATED =" User Successfully Updated";
     public static final String REVIEW_ADDED = "Review Added Success";
     public static final String ORDER_STATUS_UPDATED="Order Status successfully Updated";
+    public static final String COMMENT_STATUS_UPDATED= "Comment status updated";
 }

@@ -48,12 +48,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //TODO:Narayan - Remove inmemory auth after everything done
-       auth.inMemoryAuthentication().withUser("admin").password(getPasswordEncoder().encode("admin"))
-                .roles("ADMIN");
-
-        auth.inMemoryAuthentication().withUser("user").password(getPasswordEncoder().encode("user"))
-                .roles("USER");
         auth.userDetailsService(appUserService);
     }
 
