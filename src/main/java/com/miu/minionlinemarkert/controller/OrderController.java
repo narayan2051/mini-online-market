@@ -45,7 +45,7 @@ public class OrderController {
         return new ApiResponse(ResponseConstant.SUCCESS, ResponseConstant.ORDER_SAVED);
     }
 
-    @GetMapping
+    @GetMapping("/loggedInUserProducts")
     public List<Product> getProductsByUserId(Authentication authentication){
         return  orderService.findProductByUserId(appUtil.getUserByAuthentication(authentication).getId());
     }
