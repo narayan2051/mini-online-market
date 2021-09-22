@@ -52,8 +52,9 @@ public class PublicController {
     private void setApproval(AppUser appUser) {
         if (appUser.getRole().equals(AppConstant.SELLER)) {
             appUser.setApproved(false);
+        }else {
+            appUser.setApproved(true);
         }
-        appUser.setApproved(true);
     }
 
 }
