@@ -5,26 +5,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.math.BigDecimal;
 
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int productId;
-
-    private int quantity;
-    private String productName;
-    private long price;
-    private String productDescription;
-
-    @ManyToOne
-    private Order order;
-
-    @ManyToOne
-    private Cart cart;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private String title;
+    private double quantity;
+    private String description;
+    private BigDecimal price;
+    private String category;
+    private long createdDate;
+    private long modifiedDate;
 }

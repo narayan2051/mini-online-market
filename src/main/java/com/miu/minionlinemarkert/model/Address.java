@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import sun.jvm.hotspot.gc.shared.Generation;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
