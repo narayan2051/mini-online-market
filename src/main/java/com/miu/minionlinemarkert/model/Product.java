@@ -22,6 +22,7 @@ public class Product {
     private BigDecimal price;
     private String category;
     private List<Review> reviews;
+    private String sellerId;
     private long createdDate;
     private long modifiedDate;
 }

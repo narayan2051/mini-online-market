@@ -84,11 +84,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getPendingReviewProducts() {
 
-        Q
-
-//        return productRepository.getPendingReviewApprovalProducts();
-        return null;
-
+        Query query= new Query();
+        query.addCriteria(Criteria.where("reviews.approveStatus").is(false));
+        return mongoTemplate.find(query,Product.class);
     }
 
     @Override

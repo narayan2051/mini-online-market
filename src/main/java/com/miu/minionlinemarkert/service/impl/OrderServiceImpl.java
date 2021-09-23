@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Product> findProductByUserId(String userId) {
-        return orderRepository.findProductByUserId(userId);
+        return orderRepository.findByUserId(userId);
     }
 
     @Override

@@ -51,8 +51,9 @@ public class ProductController {
     }
 
     @PostMapping
-    public ApiResponse save(@RequestBody @Valid ProductDTO productDTO) {
+    public ApiResponse save(@RequestBody @Valid ProductDTO productDTO,Authentication authentication) {
         Product product = modelMapper.map(productDTO, Product.class);
+        product.setSellerId(appUtil.getUserByAuthentication(authentication).getId());
         productService.save(product);
         return new ApiResponse(ResponseConstant.SUCCESS, ResponseConstant.PRODUCT_ADDED);
     }
