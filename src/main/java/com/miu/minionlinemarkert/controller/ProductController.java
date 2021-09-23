@@ -62,20 +62,20 @@ public class ProductController {
     @PostMapping("/review")
     public ApiResponse updateReview(@RequestBody ReviewDTO reviewDTO, Authentication authentication) {
         Review review = new Review();
-        review.setReviewText(review.getReviewText());
+        review.setReviewText(reviewDTO.getReviewText());
         review.setUserId(appUtil.getUserByAuthentication(authentication).getId());
         review.setApproveStatus(false);
         productService.updateReview(review, reviewDTO.getProductId());
         return new ApiResponse(ResponseConstant.SUCCESS, ResponseConstant.REVIEW_ADDED);
     }
 
-    @PreAuthorize("hasAuthority(" + AppConstant.ADMIN + ")")
+    //@PreAuthorize("hasAuthority(" + AppConstant.ADMIN + ")")
     @GetMapping("/pending-review")
     public List<Product> getPendingReviewProducts() {
         return productService.getPendingReviewProducts();
     }
 
-    @PreAuthorize("hasAuthority(" + AppConstant.ADMIN + ")")
+   // @PreAuthorize("hasAuthority(" + AppConstant.ADMIN + ")")
     @PostMapping("/update-review-status")
     public ApiResponse updateProductReviewStatus(@RequestBody ProductComment productComment){
         productService.updateProductReviewStatus(productComment);
@@ -86,6 +86,10 @@ public class ProductController {
     public ApiResponse deleteProduct(@PathVariable("id") String id){
         productService.deleteById(id);
         return new ApiResponse(ResponseConstant.SUCCESS,ResponseConstant.DELETE_SUCCESS);
+    }
+    @GetMapping("/{id}")
+    public Product getById(@PathVariable("id") String id){
+       return productService.getById(id);
     }
 
 

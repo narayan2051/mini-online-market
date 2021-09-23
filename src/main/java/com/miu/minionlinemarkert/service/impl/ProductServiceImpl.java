@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -71,8 +72,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void updateReview(Review review, String productId) {
         Product product = getById(productId);
+        review.setId(UUID.randomUUID().toString());
         if (product != null) {
-            if (product.getReviews().size() > 0) {
+            if (product.getReviews()!=null && product.getReviews().size() > 0) {
                 product.getReviews().add(review);
             } else {
                 product.setReviews(Collections.singletonList(review));
@@ -83,7 +85,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getPendingReviewProducts() {
-
         Query query= new Query();
         query.addCriteria(Criteria.where("reviews.approveStatus").is(false));
         return mongoTemplate.find(query,Product.class);
