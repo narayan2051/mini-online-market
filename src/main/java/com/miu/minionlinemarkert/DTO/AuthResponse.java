@@ -9,8 +9,10 @@ import lombok.Setter;
 @Getter
 public class AuthResponse extends ApiResponse {
     private String token;
-    public AuthResponse(String type, String message, String token) {
+    private String role;
+    public AuthResponse(String type, String message, String token, String role) {
         super(type, message);
         this.token = token;
+        this.role=role;
     }
 }

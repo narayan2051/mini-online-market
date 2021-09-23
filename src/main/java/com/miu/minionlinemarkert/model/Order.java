@@ -9,25 +9,25 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name="ORDER_TABLE")
+
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private Long userId;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "ORDER_PRODUCT")
+    private String id;
+    private String userId;
     private List<Product> productList;
+    private String orderStatus;
+    private String billingAddress;
+    private String shippingAddress;
+    private BigDecimal amount;
     private long createdDate;
     private long modifiedDate;
 }

@@ -2,6 +2,8 @@ package com.miu.minionlinemarkert.controller;
 
 import com.miu.minionlinemarkert.DTO.ApiResponse;
 import com.miu.minionlinemarkert.DTO.OrderDTO;
+import com.miu.minionlinemarkert.DTO.OrderStatus;
+import com.miu.minionlinemarkert.constant.AppConstant;
 import com.miu.minionlinemarkert.constant.ResponseConstant;
 import com.miu.minionlinemarkert.model.Order;
 import com.miu.minionlinemarkert.model.Product;
@@ -12,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +44,7 @@ public class OrderController {
         Order order = modelMapper.map(orderDTO, Order.class);
         productService.updateProductQuantity(order.getProductList());
         order.setUserId(appUtil.getUserByAuthentication(authentication).getId());
+        order.setOrderStatus(AppConstant.ORDER_PLACED);
         orderService.save(order);
         return new ApiResponse(ResponseConstant.SUCCESS, ResponseConstant.ORDER_SAVED);
     }
@@ -50,8 +54,26 @@ public class OrderController {
         return  orderService.findProductByUserId(appUtil.getUserByAuthentication(authentication).getId());
     }
 
+    //TODO: For Seller
     @GetMapping
-    public List<Order> findAll(){
-        return orderService.findAll();
+    public List<Order> findAll(Authentication authentication){
+        return orderService.orderBasedOnLoggedInUser(appUtil.getUserByAuthentication(authentication).getId());
     }
+
+    @GetMapping("/userSpecific")
+    public List<Order> orderBasedOnLoggedInUser(Authentication authentication){
+        return orderService.orderBasedOnLoggedInUser(appUtil.getUserByAuthentication(authentication).getId());
+    }
+
+    @PostMapping("/orderstatus")
+    public ApiResponse updateOrderStatus(@RequestBody OrderStatus orderStatus){
+        orderService.updateOrderStatus(orderStatus);
+        return new ApiResponse(ResponseConstant.SUCCESS,ResponseConstant.ORDER_STATUS_UPDATED);
+    }
+
+    @GetMapping("/{id}")
+    public Order findById(@PathVariable("id") String id){
+        return orderService.getById(id);
+    }
+
 }

@@ -48,12 +48,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //TODO:Narayan - Remove inmemory auth after everything done
-       auth.inMemoryAuthentication().withUser("admin").password(getPasswordEncoder().encode("admin"))
-                .roles("ADMIN");
-
-        auth.inMemoryAuthentication().withUser("user").password(getPasswordEncoder().encode("user"))
-                .roles("USER");
         auth.userDetailsService(appUserService);
     }
 
@@ -66,7 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-ui.html").permitAll()
                 .antMatchers("/webjars/**", "/swagger-resources/**").permitAll()
                 .antMatchers("/v2/**").permitAll()
-                .antMatchers("/api/users/**").hasAnyAuthority("ADMIN","USER")
+               .antMatchers("/api/users/**").hasAnyAuthority("ADMIN","USER")
                 .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest().authenticated()
                 .and().csrf().disable()
                 .addFilter(new AuthorizationFilter(authenticationManager()))
@@ -119,5 +113,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         props.put("mail.debug", "true");
         return mailSender;
     }
+
 
 }
