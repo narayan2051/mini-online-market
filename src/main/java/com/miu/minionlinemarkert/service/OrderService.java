@@ -10,4 +10,6 @@ public interface OrderService extends GenericService<Order>{
     List<Product> findProductByUserId(String userId);
 
     void updateOrderStatus(OrderStatus orderStatus);
+
+    List<Order> orderBasedOnLoggedInUser(String id);
 }

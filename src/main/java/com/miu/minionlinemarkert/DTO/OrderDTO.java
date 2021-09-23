@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Setter
@@ -24,4 +25,5 @@ public class OrderDTO {
     @NotEmpty
     @Size(min = 2)
     private String shippingAddress;
+    private BigDecimal amount;
 }

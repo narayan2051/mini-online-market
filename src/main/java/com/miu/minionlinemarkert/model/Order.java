@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Setter
@@ -27,6 +28,7 @@ public class Order {
     private String orderStatus;
     private String billingAddress;
     private String shippingAddress;
+    private BigDecimal amount;
     private long createdDate;
     private long modifiedDate;
 }

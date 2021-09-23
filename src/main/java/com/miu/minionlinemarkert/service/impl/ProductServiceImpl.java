@@ -6,6 +6,9 @@ import com.miu.minionlinemarkert.model.Review;
 import com.miu.minionlinemarkert.repository.ProductRepository;
 import com.miu.minionlinemarkert.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,10 +19,12 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final MongoTemplate mongoTemplate;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, MongoTemplate mongoTemplate) {
         this.productRepository = productRepository;
+        this.mongoTemplate = mongoTemplate;
     }
 
     @Override
@@ -45,8 +50,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProductWhichAreNotOutOfStock() {
-        return null;
-//        return productRepository.getAllProductWhichAreNotOutOfStock();
+
+        Query query= new Query();
+        query.addCriteria(Criteria.where("quantity").gt(0));
+        return mongoTemplate.find(query,Product.class);
     }
 
     @Override
@@ -76,6 +83,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getPendingReviewProducts() {
+
+        Q
+
 //        return productRepository.getPendingReviewApprovalProducts();
         return null;
 

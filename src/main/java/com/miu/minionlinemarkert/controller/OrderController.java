@@ -54,10 +54,15 @@ public class OrderController {
         return  orderService.findProductByUserId(appUtil.getUserByAuthentication(authentication).getId());
     }
 
-    //TODO: Narayan - Order List should be based on logged in user
+    //TODO: For Seller
     @GetMapping
-    public List<Order> findAll(){
-        return orderService.findAll();
+    public List<Order> findAll(Authentication authentication){
+        return orderService.orderBasedOnLoggedInUser(appUtil.getUserByAuthentication(authentication).getId());
+    }
+
+    @GetMapping("/userSpecific")
+    public List<Order> orderBasedOnLoggedInUser(Authentication authentication){
+        return orderService.orderBasedOnLoggedInUser(appUtil.getUserByAuthentication(authentication).getId());
     }
 
     @PostMapping("/orderstatus")

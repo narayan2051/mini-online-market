@@ -49,23 +49,10 @@ public class AuthenticationController {
             String role = authentication.getAuthorities().toString();
             role = role.substring(1, role.indexOf("]"));
             String token = jwtUtil.generateToken(authentication);
-           // addCookieOnResponseHeader(1000 * 60 * 60 * 60 * 24 * 7,
-               //     servletResponse, token, role);
-            return new AuthResponse(ResponseConstant.SUCCESS, "Login Success", jwtUtil.generateToken(authentication),role);
+                     return new AuthResponse(ResponseConstant.SUCCESS, "Login Success", jwtUtil.generateToken(authentication),role);
         }
         return new AuthResponse(ResponseConstant.FAILURE, "Invalid Username/password", null,null);
     }
 
-    private void addCookieOnResponseHeader(Integer tokenExpiryInSeconds, HttpServletResponse httpServletResponse, String accessToken, String role) {
-        Cookie domainCookie = new Cookie("auth", accessToken);
-       // Cookie roleCookie = new Cookie("role", role);
-        domainCookie.setMaxAge(tokenExpiryInSeconds);
-      //  roleCookie.setMaxAge(tokenExpiryInSeconds);
-        domainCookie.setPath("/");
-      //  roleCookie.setPath("/");
-        domainCookie.setHttpOnly(true);
-        httpServletResponse.addCookie(domainCookie);
-       // httpServletResponse.addCookie(roleCookie);
-    }
 
 }

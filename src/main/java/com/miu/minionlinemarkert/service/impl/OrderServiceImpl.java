@@ -8,6 +8,9 @@ import com.miu.minionlinemarkert.repository.OrderRepository;
 import com.miu.minionlinemarkert.service.OrderService;
 import com.miu.minionlinemarkert.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +23,13 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final ProductService productService;
+    private final MongoTemplate mongoTemplate;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, ProductService productService) {
+    public OrderServiceImpl(OrderRepository orderRepository, ProductService productService, MongoTemplate mongoTemplate) {
         this.orderRepository = orderRepository;
         this.productService = productService;
+        this.mongoTemplate = mongoTemplate;
     }
 
     @Override
@@ -55,17 +60,24 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void updateOrderStatus(OrderStatus orderStatus) {
-        Order order= getById(orderStatus.getOrderId());
-        if(orderStatus.getStatus().equals(AppConstant.ORDER_CANCELLED)){
-            List<Product> products= new ArrayList<>();
-            for(Product product: order.getProductList()){
-                Product productFromDB= productService.getById(product.getId());
-                productFromDB.setQuantity(productFromDB.getQuantity()+product.getQuantity());
+        Order order = getById(orderStatus.getOrderId());
+        if (orderStatus.getStatus().equals(AppConstant.ORDER_CANCELLED)) {
+            List<Product> products = new ArrayList<>();
+            for (Product product : order.getProductList()) {
+                Product productFromDB = productService.getById(product.getId());
+                productFromDB.setQuantity(productFromDB.getQuantity() + product.getQuantity());
                 products.add(productFromDB);
             }
             productService.saveAll(products);
         }
         order.setOrderStatus(orderStatus.getStatus());
         save(order);
+    }
+
+    @Override
+    public List<Order> orderBasedOnLoggedInUser(String id) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("userId").is(id));
+        return mongoTemplate.find(query, Order.class);
     }
 }
