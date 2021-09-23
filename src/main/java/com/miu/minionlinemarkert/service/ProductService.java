@@ -19,4 +19,6 @@ public interface ProductService extends GenericService<Product> {
     void saveAll(List<Product> productList);
 
     void updateProductReviewStatus(ProductComment productComment);
+
+    void deleteById(String id);
 }

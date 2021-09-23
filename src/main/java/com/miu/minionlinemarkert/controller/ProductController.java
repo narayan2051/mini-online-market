@@ -14,7 +14,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,5 +80,12 @@ public class ProductController {
         productService.updateProductReviewStatus(productComment);
         return new ApiResponse(ResponseConstant.SUCCESS,ResponseConstant.COMMENT_STATUS_UPDATED);
     }
+
+    @DeleteMapping("/{id}")
+    public ApiResponse deleteProduct(@PathVariable("id") String id){
+        productService.deleteById(id);
+        return new ApiResponse(ResponseConstant.SUCCESS,ResponseConstant.DELETE_SUCCESS);
+    }
+
 
 }
