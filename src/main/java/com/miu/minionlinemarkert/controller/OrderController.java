@@ -57,7 +57,7 @@ public class OrderController {
     //TODO: For Seller
     @GetMapping
     public List<Order> findAll(Authentication authentication){
-        return orderService.orderBasedOnLoggedInUser(appUtil.getUserByAuthentication(authentication).getId());
+        return orderService.findAll();
     }
 
     @GetMapping("/userSpecific")
