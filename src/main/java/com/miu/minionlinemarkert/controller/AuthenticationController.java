@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.ArrayList;
 
@@ -36,17 +38,34 @@ public class AuthenticationController {
 
 
     @PostMapping
-    public ApiResponse login(@RequestBody @Valid Login login){
-        AppUser appUser= appUserService.getByUserName(login.getUsername());
+    public ApiResponse login(@RequestBody @Valid Login login, HttpServletResponse servletResponse) {
+        AppUser appUser = appUserService.getByUserName(login.getUsername());
 //        if(!appUser.isApproved()){
 //           return new ApiResponse(ResponseConstant.FAILURE,ResponseConstant.USER_UNAPPROVED);
 //        }
         Authentication authentication = authenticationManager.
                 authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword(), new ArrayList<>()));
         if (authentication != null) {
-            return new AuthResponse(ResponseConstant.SUCCESS,"Login Success",jwtUtil.generateToken(authentication));
+            String role = authentication.getAuthorities().toString();
+            role = role.substring(1, role.indexOf("]"));
+            String token = jwtUtil.generateToken(authentication);
+           // addCookieOnResponseHeader(1000 * 60 * 60 * 60 * 24 * 7,
+               //     servletResponse, token, role);
+            return new AuthResponse(ResponseConstant.SUCCESS, "Login Success", jwtUtil.generateToken(authentication),role);
         }
-        return new AuthResponse(ResponseConstant.FAILURE, "Invalid Username/password", null);
+        return new AuthResponse(ResponseConstant.FAILURE, "Invalid Username/password", null,null);
+    }
+
+    private void addCookieOnResponseHeader(Integer tokenExpiryInSeconds, HttpServletResponse httpServletResponse, String accessToken, String role) {
+        Cookie domainCookie = new Cookie("auth", accessToken);
+       // Cookie roleCookie = new Cookie("role", role);
+        domainCookie.setMaxAge(tokenExpiryInSeconds);
+      //  roleCookie.setMaxAge(tokenExpiryInSeconds);
+        domainCookie.setPath("/");
+      //  roleCookie.setPath("/");
+        domainCookie.setHttpOnly(true);
+        httpServletResponse.addCookie(domainCookie);
+       // httpServletResponse.addCookie(roleCookie);
     }
 
 }
