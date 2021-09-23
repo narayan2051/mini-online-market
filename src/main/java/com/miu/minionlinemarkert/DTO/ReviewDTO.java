@@ -11,5 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ReviewDTO {
     private String reviewText;
-    private Long productId;
+    private String productId;
 }

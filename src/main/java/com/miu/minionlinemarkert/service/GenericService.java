@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface GenericService<T> {
     void save(T t);
-    T getById(Long id);
+    T getById(String id);
     List<T> findAll();
 }

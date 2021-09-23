@@ -18,14 +18,11 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name="ORDER_TABLE")
+
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private Long userId;
-    @ManyToMany(cascade = CascadeType.MERGE)
+    private String id;
+    private String userId;
     private List<Product> productList;
     private String orderStatus;
     private String billingAddress;

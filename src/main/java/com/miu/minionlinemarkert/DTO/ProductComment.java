@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductComment {
-    private long productId;
+    private String productId;
     private boolean status;
-    private long reviewId;
+    private String reviewId;
 }

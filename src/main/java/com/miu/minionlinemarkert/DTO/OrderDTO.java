@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO {
-    private Long id;
+    private String id;
     @Size(min = 1)
     private List<Product> productList;
     @NotEmpty

@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderStatus {
-    private Long orderId;
+    private String orderId;
     private String status;
 }

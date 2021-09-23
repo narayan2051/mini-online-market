@@ -6,5 +6,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface AppUserService extends GenericService<AppUser>, UserDetailsService {
     AppUser getByUserName(String userName);
 
-    void updateUserStatus(Long id, boolean status);
+    void updateUserStatus(String id, boolean status);
 }

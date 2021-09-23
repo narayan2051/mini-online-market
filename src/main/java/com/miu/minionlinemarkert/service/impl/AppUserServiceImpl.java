@@ -52,7 +52,7 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public void updateUserStatus(Long id, boolean status) {
+    public void updateUserStatus(String id, boolean status) {
         AppUser appUser = getById(id);
         appUser.setApproved(status);
         appUser.setModifiedDate(System.currentTimeMillis());
@@ -63,7 +63,7 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public AppUser getById(Long id) {
+    public AppUser getById(String id) {
         return appUserRepository.findById(id).orElse(null);
     }
 

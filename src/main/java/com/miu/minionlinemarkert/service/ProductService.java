@@ -12,7 +12,7 @@ public interface ProductService extends GenericService<Product> {
 
     void updateProductQuantity(List<Product> productList);
 
-    void updateReview(Review review, Long productId);
+    void updateReview(Review review, String productId);
 
     List<Product> getPendingReviewProducts();
 

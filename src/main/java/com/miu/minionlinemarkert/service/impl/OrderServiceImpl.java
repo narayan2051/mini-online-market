@@ -39,8 +39,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getById(Long id) {
-        return orderRepository.getById(id);
+    public Order getById(String id) {
+        return orderRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Product> findProductByUserId(long userId) {
+    public List<Product> findProductByUserId(String userId) {
         return orderRepository.findProductByUserId(userId);
     }
 

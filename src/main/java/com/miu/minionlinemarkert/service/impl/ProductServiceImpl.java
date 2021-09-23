@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getById(Long id) {
+    public Product getById(String id) {
         return productRepository.findById(id).orElse(null);
     }
 
@@ -45,7 +45,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProductWhichAreNotOutOfStock() {
-        return productRepository.getAllProductWhichAreNotOutOfStock();
+        return null;
+//        return productRepository.getAllProductWhichAreNotOutOfStock();
     }
 
     @Override
@@ -53,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> updatedProducts = new ArrayList<>();
         for (Product product : productList) {
             Product productFromDB = getById(product.getId());
-            //productFromDB.setQuantity(productFromDB.getQuantity() - product.getQuantity());
+            productFromDB.setQuantity(productFromDB.getQuantity() - product.getQuantity());
             productFromDB.setModifiedDate(System.currentTimeMillis());
             updatedProducts.add(productFromDB);
         }
@@ -61,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateReview(Review review, Long productId) {
+    public void updateReview(Review review, String productId) {
         Product product = getById(productId);
         if (product != null) {
             if (product.getReviews().size() > 0) {
@@ -75,7 +76,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getPendingReviewProducts() {
-        return productRepository.getPendingReviewApprovalProducts();
+//        return productRepository.getPendingReviewApprovalProducts();
+        return null;
 
     }
 
@@ -88,7 +90,7 @@ public class ProductServiceImpl implements ProductService {
     public void updateProductReviewStatus(ProductComment productComment) {
         Product product = getById(productComment.getProductId());
         for (Review r : product.getReviews()) {
-            if (r.getId() == productComment.getReviewId()) {
+            if (r.getId().equals(productComment.getReviewId())) {
                 r.setApproveStatus(productComment.isStatus());
                 break;
             }
