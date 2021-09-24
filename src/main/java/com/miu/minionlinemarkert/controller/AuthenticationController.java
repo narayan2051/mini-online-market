@@ -40,9 +40,9 @@ public class AuthenticationController {
     @PostMapping
     public ApiResponse login(@RequestBody @Valid Login login, HttpServletResponse servletResponse) {
         AppUser appUser = appUserService.getByUserName(login.getUsername());
-//        if(!appUser.isApproved()){
-//           return new ApiResponse(ResponseConstant.FAILURE,ResponseConstant.USER_UNAPPROVED);
-//        }
+        if(!appUser.isApproved()){
+           return new ApiResponse(ResponseConstant.FAILURE,ResponseConstant.USER_UNAPPROVED);
+        }
         Authentication authentication = authenticationManager.
                 authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword(), new ArrayList<>()));
         if (authentication != null) {

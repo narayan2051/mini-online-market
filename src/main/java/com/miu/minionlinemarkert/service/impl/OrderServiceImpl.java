@@ -5,8 +5,10 @@ import com.miu.minionlinemarkert.constant.AppConstant;
 import com.miu.minionlinemarkert.model.Order;
 import com.miu.minionlinemarkert.model.Product;
 import com.miu.minionlinemarkert.repository.OrderRepository;
+import com.miu.minionlinemarkert.service.AppUserService;
 import com.miu.minionlinemarkert.service.OrderService;
 import com.miu.minionlinemarkert.service.ProductService;
+import com.miu.minionlinemarkert.util.EmailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -24,12 +26,16 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ProductService productService;
     private final MongoTemplate mongoTemplate;
+    private final EmailUtil emailUtil;
+    private final AppUserService appUserService;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, ProductService productService, MongoTemplate mongoTemplate) {
+    public OrderServiceImpl(OrderRepository orderRepository, ProductService productService, MongoTemplate mongoTemplate, EmailUtil emailUtil, AppUserService appUserService) {
         this.orderRepository = orderRepository;
         this.productService = productService;
         this.mongoTemplate = mongoTemplate;
+        this.emailUtil = emailUtil;
+        this.appUserService = appUserService;
     }
 
     @Override
@@ -72,6 +78,7 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setOrderStatus(orderStatus.getStatus());
         save(order);
+        emailUtil.sendEmail(appUserService.getById(order.getUserId()).getEmail(), "Order Status", "Your Order is " + orderStatus.getStatus());
     }
 
     @Override

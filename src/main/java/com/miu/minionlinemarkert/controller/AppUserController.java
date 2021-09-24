@@ -32,28 +32,29 @@ public class AppUserController {
         this.passwordEncoder = passwordEncoder;
     }
 
-  // @PreAuthorize("hasAuthority(" + AppConstant.ADMIN + ")")
+    // @PreAuthorize("hasAuthority(" + AppConstant.ADMIN + ")")
     @GetMapping
     public List<AppUser> findAll() {
         return appUserService.findAll();
     }
 
-  //  @PreAuthorize("hasAuthority(" + AppConstant.ADMIN + ")")
+    //  @PreAuthorize("hasAuthority(" + AppConstant.ADMIN + ")")
     @PostMapping("/updateUserStatus")
     public ApiResponse updateUser(@RequestBody UpdateUserDTO updateUserDTO) {
         appUserService.updateUserStatus(updateUserDTO.getId(), updateUserDTO.isApproved());
         return new ApiResponse(ResponseConstant.SUCCESS, ResponseConstant.USER_UPDATED);
     }
 
+    //Hardcoded User
     @PostConstruct
     public void addDefaultUser() {
-        AppUser appUser = appUserService.getByUserName("narayan2051@gmail.com");
+        AppUser appUser = appUserService.getByUserName("admin@admin.com");
         if (null == appUser) {
-            AppUser user = new AppUser(null, "narayan", "chapagain", "narayan2051@gmail.com", passwordEncoder.encode("1234"), "ADMIN", true, 0, 0);
+            AppUser user = new AppUser(null, "Admin", "Admin", "admin@admin.com", passwordEncoder.encode("1234"), "ADMIN", true, 0, 0);
             appUserService.save(user);
-            AppUser user1 = new AppUser(null, "narayan", "chapagain", "narayan2051@yopmail.com", passwordEncoder.encode("1234"), "SELLER", true, 0, 0);
+            AppUser user1 = new AppUser(null, "seller", "seller", "seller@seller.com", passwordEncoder.encode("1234"), "SELLER", true, 0, 0);
             appUserService.save(user1);
-            AppUser user2 = new AppUser(null, "narayan", "chapagain", "narayan@yopmail.com", passwordEncoder.encode("1234"), "USER", true, 0, 0);
+            AppUser user2 = new AppUser(null, "Buyer", "Buyer", "buyer@buyer.com", passwordEncoder.encode("1234"), "USER", true, 0, 0);
             appUserService.save(user2);
         }
     }
